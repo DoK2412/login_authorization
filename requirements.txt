@@ -3,3 +3,4 @@ fastapi==0.100.0
 email-validate==1.1.2
 asyncpg==0.28.0
 httpx==0.24.1
+rsa==4.9
