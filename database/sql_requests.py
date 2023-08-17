@@ -42,7 +42,7 @@ SELECT id, password, uid, active FROM profile WHERE email = $1
 
 INSERT_PUBLIC_PRIVATE_KEY = '''
 --запись публичного ключа пользователя
-INSERT INTO public_keys
+INSERT INTO user_data_public_keys
     (id_user, public_key, private_key)
 VALUES 
     ($1, $2, $3)
@@ -50,7 +50,7 @@ VALUES
 
 GET_PUBLIC_KEY = '''
 --получение прубличного ключа пользователя
-SELECT keys FROM public_keys WHERE id_user = $1
+SELECT keys FROM user_data_public_keys WHERE id_user = $1
 '''
 
 CHECK_UID = '''
