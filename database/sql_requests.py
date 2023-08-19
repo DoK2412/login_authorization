@@ -57,3 +57,11 @@ CHECK_UID = '''
 -- получение параля пользователя
 SELECT uid FROM profile WHERE id = $1
 '''
+
+CREATE_FOLDER = '''
+-- создание папок пользователя
+INSERT INTO user_folder 
+    (profile_id, folder_name, folder_parent) 
+VALUES
+    ($1, $2, $3)
+'''

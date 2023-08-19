@@ -8,7 +8,7 @@ from email_validate import validate, validate_or_fail
 from database.connection_db import JobDb
 from database.sql_requests import (NEW_USER, NEW_CODE, EMAIL_CHECK, CHECK_CODE, UPDATE_STATUS_PROFILE,
                                    UPDATE_STATUS_CONFIRM, CHECK_PASSWORD, INSERT_PUBLIC_PRIVATE_KEY,
-                                   GET_PUBLIC_KEY, CHECK_UID)
+                                   GET_PUBLIC_KEY, CHECK_UID, CREATE_FOLDER)
 from datetime import datetime, timedelta
 
 from service.user import User
@@ -81,7 +81,7 @@ async def registration_user(mail: str,
         exp_date = date + timedelta(seconds=600)
         await connector.fetchval(NEW_CODE, user.id, code_rand, date, exp_date)
     # отправка письма на почту
-    await sendEmail(code_rand)
+    await sendEmail(code_rand, mail)
     return ResponseCode(1, user.id)
 
 
@@ -99,6 +99,7 @@ async def confirm_user(requests, code: str, public_key: str, private_key: str ):
                 await connector.fetchrow(UPDATE_STATUS_PROFILE, uuid, user.id)
                 await connector.fetchrow(UPDATE_STATUS_CONFIRM, user.id, db_code['code'])
                 await connector.fetchval(INSERT_PUBLIC_PRIVATE_KEY, user.id, public_key, private_key)
+                await connector.fetchrow(CREATE_FOLDER, user.id, 'my_folder', 'null')
                 return ResponseCode(1)
             elif db_code and db_code['exp_date'] < datetime.now():
                 await connector.fetchrow(UPDATE_STATUS_CONFIRM, user.id, db_code['code'])
@@ -125,7 +126,7 @@ async def authorization_user(requests,
                 date = datetime.now()
                 exp_date = date + timedelta(seconds=600)
                 await connector.fetchval(NEW_CODE, user.id, code_rand, date, exp_date)
-                await sendEmail(code_rand)
+                await sendEmail(code_rand, mail)
                 return ResponseCode(1)
             else:
                 return ResponseCode(2,'Пароли не совпадают, повторите попытку')
