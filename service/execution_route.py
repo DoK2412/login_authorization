@@ -99,7 +99,7 @@ async def confirm_user(requests, code: str, public_key: str, private_key: str ):
                 await connector.fetchrow(UPDATE_STATUS_PROFILE, uuid, user.id)
                 await connector.fetchrow(UPDATE_STATUS_CONFIRM, user.id, db_code['code'])
                 await connector.fetchval(INSERT_PUBLIC_PRIVATE_KEY, user.id, public_key, private_key)
-                await connector.fetchrow(CREATE_FOLDER, user.id, 'my_folder', 'null')
+                await connector.fetchrow(CREATE_FOLDER, user.id, 'my_folder')
                 return ResponseCode(1)
             elif db_code and db_code['exp_date'] < datetime.now():
                 await connector.fetchrow(UPDATE_STATUS_CONFIRM, user.id, db_code['code'])
@@ -109,11 +109,11 @@ async def confirm_user(requests, code: str, public_key: str, private_key: str ):
 
 
 async def authorization_user(requests,
-                                mail: str,
+                                email: str,
                                 password: str):
     code_rand = str(random.randrange(100000, 1000000))
     async with JobDb() as connector:
-        db_password = await connector.fetchrow(CHECK_PASSWORD, mail)
+        db_password = await connector.fetchrow(CHECK_PASSWORD, email)
         user.id = db_password['id']
         if db_password['active']:
 
@@ -126,7 +126,7 @@ async def authorization_user(requests,
                 date = datetime.now()
                 exp_date = date + timedelta(seconds=600)
                 await connector.fetchval(NEW_CODE, user.id, code_rand, date, exp_date)
-                await sendEmail(code_rand, mail)
+                await sendEmail(code_rand, email)
                 return ResponseCode(1)
             else:
                 return ResponseCode(2,'Пароли не совпадают, повторите попытку')

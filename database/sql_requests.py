@@ -61,7 +61,7 @@ SELECT uid FROM profile WHERE id = $1
 CREATE_FOLDER = '''
 -- создание папок пользователя
 INSERT INTO user_folder 
-    (profile_id, folder_name, folder_parent) 
+    (profile_id, folder_name) 
 VALUES
-    ($1, $2, $3)
+    ($1, $2)
 '''

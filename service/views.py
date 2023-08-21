@@ -34,7 +34,7 @@ async def confirm(requests: Request,
 async def authorization(requests: Request,
                         user: Authorization):
     result = await authorization_user(requests,
-                                user.mail,
+                                user.email,
                                 user.password)
     return result
 

@@ -4,7 +4,7 @@ import asyncpg
 from asyncpg.pool import Pool
 
 from settings import config
-from log.descriptionlogger import log_error, log_info
+# from log.descriptionlogger import log_error, log_info
 
 
 
@@ -58,7 +58,7 @@ class JobDb():
             print(self.pool)
         except Exception as e:
             pass
-            log_error.error(f'При подключении к базе данных произошло исключение: {e}')
+            # log_error.error(f'При подключении к базе данных произошло исключение: {e}')
 
     async def close_pool(self):
         '''Функция завершения работы базы данных (отключение)
@@ -68,4 +68,4 @@ class JobDb():
                 await JobDb.__pool[name].close()
         except Exception as e:
             pass
-            log_error.error(f'При отключении базы данных произошло исключение: {e}')
+            # log_error.error(f'При отключении базы данных произошло исключение: {e}')

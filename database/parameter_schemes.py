@@ -19,7 +19,7 @@ class Config(BaseModel):
 
 
 class Authorization(BaseModel):
-    mail: str = Query(description='Почта пользователя')
+    email: str = Query(description='Почта пользователя')
     password: str = Query(description='Пароль для входа в приложение')
 
 
