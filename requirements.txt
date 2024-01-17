@@ -4,3 +4,5 @@ email-validate==1.1.2
 asyncpg==0.28.0
 httpx==0.24.1
 rsa==4.9
+fastapi-utils==0.2.1
+fastapi-sessions==0.3.2

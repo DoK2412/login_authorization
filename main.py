@@ -1,5 +1,7 @@
+import smtplib
 import smtplib as smtp
 from settings import email_out, password_email
+import ssl
 
 
 async def sendEmail(code, email_user):
@@ -14,7 +16,7 @@ async def sendEmail(code, email_user):
                                                            dest_email,
                                                            subject,
                                                            email_text)
-    server = smtp.SMTP_SSL('smtp.yandex.com', 465)
+    server = smtplib.SMTP_SSL('smtp.yandex.com', 465)
     server.set_debuglevel(1)
     server.ehlo(email)
     server.login(email, password)
